@@ -87,9 +87,6 @@ export default function Management() {
                 {projects.length} projeto{projects.length !== 1 ? 's' : ''} cadastrado{projects.length !== 1 ? 's' : ''}
               </p>
             </div>
-            <Link to="/novo-projeto" className="btn btn-primary">
-              + Adicionar novo projeto
-            </Link>
           </div>
         </div>
 
