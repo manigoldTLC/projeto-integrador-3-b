@@ -16,6 +16,15 @@ const EMPTY = {
   year: new Date().getFullYear().toString(),
 }
 
+const Field = ({ label, name, hint, errors = {}, children }) => (
+  <div className="form-group">
+    <label className="form-label">{label}</label>
+    {children}
+    {errors[name] && <span style={{ fontSize: 12, color: 'var(--danger)' }}>{errors[name]}</span>}
+    {hint && !errors[name] && <span className="form-hint">{hint}</span>}
+  </div>
+)
+
 export default function ProjectForm() {
   const { id } = useParams()
   const isEdit = Boolean(id)
@@ -80,15 +89,6 @@ export default function ProjectForm() {
     navigate('/gerenciamento')
   }
 
-  const Field = ({ label, name, hint, children }) => (
-    <div className="form-group">
-      <label className="form-label">{label}</label>
-      {children}
-      {errors[name] && <span style={{ fontSize: 12, color: 'var(--danger)' }}>{errors[name]}</span>}
-      {hint && !errors[name] && <span className="form-hint">{hint}</span>}
-    </div>
-  )
-
   const tags = parseTags(tagInput)
 
   return (
@@ -118,7 +118,7 @@ export default function ProjectForm() {
                 Informações básicas
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <Field label="Título do projeto *" name="title">
+                <Field label="Título do projeto *" name="title" errors={errors}>
                   <input
                     className="form-input"
                     placeholder="Ex: Dashboard de Analytics"
@@ -128,7 +128,7 @@ export default function ProjectForm() {
                   />
                 </Field>
 
-                <Field label="Descrição *" name="description" hint="Descreva o projeto, seus objetivos e principais funcionalidades.">
+                <Field label="Descrição *" name="description" hint="Descreva o projeto, seus objetivos e principais funcionalidades." errors={errors}>
                   <textarea
                     className="form-textarea"
                     placeholder="Uma descrição clara e objetiva do projeto..."
@@ -140,12 +140,12 @@ export default function ProjectForm() {
                 </Field>
 
                 <div className="form-grid-2">
-                  <Field label="Categoria" name="category">
+                  <Field label="Categoria" name="category" errors={errors}>
                     <select className="form-select" value={form.category} onChange={e => set('category', e.target.value)}>
                       {CATEGORIES.map(c => <option key={c}>{c}</option>)}
                     </select>
                   </Field>
-                  <Field label="Ano" name="year">
+                  <Field label="Ano" name="year" errors={errors}>
                     <input
                       className="form-input"
                       placeholder="2024"
@@ -155,7 +155,7 @@ export default function ProjectForm() {
                   </Field>
                 </div>
 
-                <Field label="Status" name="status">
+                <Field label="Status" name="status" errors={errors}>
                   <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                     {STATUSES.map(s => (
                       <button
